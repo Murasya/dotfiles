@@ -1,0 +1,54 @@
+# \C-a を \C-t に.
+escape ^z^z
+# Encoding を UTF-8 に.
+defencoding utf-8 
+encoding utf-8
+defutf8 on
+defkanji utf-8
+# おまじない
+defbce on
+#term screen-256color-bce
+attrcolor b ".I" 
+# autodetach を有効に
+autodetach on
+# スクロールバックできる行を増やす 
+defscrollback 3000
+# uim-fep filter
+bind J exec | uim-fep -S
+bind j 
+bind K eval 'exec cat' kill redisplay
+caption always "%{= db}[%{= dw}%H%{= db}] %{= dw} %-w%{= dr}%n %t%{-}%+w %= %{= db}|%{= dw}%y/%m/%d%{= db}|"
+# vbell はウザいので off
+vbell off
+bind ^G
+bind g
+# LANG, TERM の切りかえ
+bind 'U' eval "encoding utf8" "stuff 'export LANG=ja_JP.UTF-8\012'"
+bind 'E' eval "encoding euc" "stuff 'export LANG=ja_JP.eucJP\012'"
+bind 'X' eval "term xterm" "stuff 'export TERM=xterm\012'"
+#bind 'S' eval "term screen.mlterm" "stuff 'export TERM=screen.mlterm\012'"
+bind 'R' eval "backtick 2 0 0 tail -F /tmp/backtick-notify.txt"
+
+# emacs 風
+bind 'o' focus    #  C-x o
+
+# title
+#shelltitle "$ |shell"
+
+# -----------------------------------------------------------------------
+# TERMINAL SETTINGS
+# -----------------------------------------------------------------------
+# The vt100 description does not mention "dl". *sigh*
+termcapinfo vt100 dl=5\E[M
+# turn sending of screen messages to hardstatus off
+hardstatus off
+# Set the hardstatus prop on gui terms to set the titlebar/icon title
+termcapinfo xterm*|rxvt*|kterm*|Eterm* hs:ts=\E]0;:fs=\007:ds=\E]0;\007
+# set these terminals up to be 'optimal' instead of vt100
+termcapinfo xterm*|linux*|rxvt*|Eterm* OP
+# Change the xterm initialization string from is2=\E[!p\E[?3;4l\E[4l\E>
+termcapinfo xterm 'is=\E[r\E[m\E[2J\E[H\E[?7h\E[?1;4;6l'
+# Do not use xterms alternate window buffer (won't add lines to scrollback bfr)
+termcapinfo xterm|xterms|xs ti=\E7\E[?47l
+# tell screen how to set colors. AB = background, AF=foreground
+termcapinfo xterm* 'Co#256:pa#32767:AB=\E[48;5;%dm:AF=\E[38;5;%dm' 
